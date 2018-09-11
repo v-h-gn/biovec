@@ -2,6 +2,7 @@ from gensim.models import word2vec
 from Bio import SeqIO
 import sys
 from gensim.models import word2vec
+from tqdm import tqdm
 
 
 def split_ngrams(seq, n):
@@ -29,11 +30,10 @@ def generate_corpusfile(corpus_fname, n, out):
         to generate corpus.
     '''
     f = open(out, "w")
-    for r in SeqIO.parse(corpus_fname, "fasta"):
+    for r in tqdm(list(SeqIO.parse(corpus_fname, "fasta")), desc='corpus generation progress'):
         ngram_patterns = split_ngrams(r.seq, n)
         for ngram_pattern in ngram_patterns:
             f.write(" ".join(ngram_pattern) + "\n")
-        sys.stdout.write(".")
 
     f.close()
 
