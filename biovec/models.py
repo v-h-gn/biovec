@@ -63,7 +63,7 @@ class ProtVec(word2vec.Word2Vec):
             raise Exception("Either corpus_fname or corpus is needed!")
 
         if corpus_fname is not None:
-            print 'Generate Corpus file from fasta file...'
+            print('Generate Corpus file from fasta file...')
             generate_corpusfile(corpus_fname, n, out)
             corpus = word2vec.Text8Corpus(out)
 
