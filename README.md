@@ -1,6 +1,11 @@
 BioVec
 --------------------------------------
 
+### Installation
+```
+pip install biovec
+```
+
 ### Example
 
 ```
