@@ -1,5 +1,5 @@
 from gensim.models import word2vec
-from Bio import SeqIO
+from pyfasta import Fasta
 import sys
 from gensim.models import word2vec
 from tqdm import tqdm
@@ -30,8 +30,11 @@ def generate_corpusfile(corpus_fname, n, out):
         to generate corpus.
     '''
     f = open(out, "w")
-    for r in tqdm(list(SeqIO.parse(corpus_fname, "fasta")), desc='corpus generation progress'):
-        ngram_patterns = split_ngrams(r.seq, n)
+    fasta = Fasta(corpus_fname)
+    for record_id in tqdm(fasta.keys(), desc='corpus generation progress'):
+        r = fasta[record_id]
+        seq = str(r)
+        ngram_patterns = split_ngrams(seq, n)
         for ngram_pattern in ngram_patterns:
             f.write(" ".join(ngram_pattern) + "\n")
 

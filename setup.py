@@ -7,11 +7,11 @@ description = 'A new approach for representing biological sequences'
 REQUIRED_PACKAGES = [
     'gensim==3.4.0',
     'tqdm==4.23.4',
-    'biopython==1.71'
+    'pyfasta==0.5.2'
 ]
 
 setup(name='biovec',
-      version='0.2.0',
+      version='0.2.1',
       license='MIT',
       description=description,
       long_description=description,
