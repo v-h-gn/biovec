@@ -6,7 +6,7 @@ BioVec
 pip install biovec
 ```
 
-### Example
+### Quick Start
 
 ```
 import biovec
