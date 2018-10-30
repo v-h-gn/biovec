@@ -37,7 +37,6 @@ def generate_corpusfile(corpus_fname, n, out):
         ngram_patterns = split_ngrams(seq, n)
         for ngram_pattern in ngram_patterns:
             f.write(" ".join(ngram_pattern) + "\n")
-
     f.close()
 
 
