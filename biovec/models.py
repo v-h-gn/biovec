@@ -19,18 +19,18 @@ def split_ngrams(seq, n):
     return str_ngrams
 
 
-def generate_corpusfile(corpus_fname, n, out):
+def generate_corpusfile(fasta_fname, n, corpus_fname):
     '''
     Args:
-        corpus_fname: corpus file name
+        fasta_fname: corpus file name
         n: the number of chunks to split. In other words, "n" for "n-gram"
-        out: output corpus file path
+        corpus_fname: corpus_fnameput corpus file path
     Description:
         Protvec uses word2vec inside, and it requires to load corpus file
         to generate corpus.
     '''
-    f = open(out, "w")
-    fasta = Fasta(corpus_fname)
+    f = open(corpus_fname, "w")
+    fasta = Fasta(fasta_fname)
     for record_id in tqdm(fasta.keys(), desc='corpus generation progress'):
         r = fasta[record_id]
         seq = str(r)
@@ -46,28 +46,28 @@ def load_protvec(model_fname):
 
 class ProtVec(word2vec.Word2Vec):
 
-    def __init__(self, corpus_fname=None, corpus=None, n=3, size=100, out="corpus.txt",  sg=1, window=25, min_count=1, workers=3):
+    def __init__(self, fasta_fname=None, corpus=None, n=3, size=100, corpus_fname="corpus.txt",  sg=1, window=25, min_count=1, workers=3):
         """
         Either fname or corpus is required.
 
-        corpus_fname: fasta file for corpus
+        fasta_fname: fasta file for corpus
         corpus: corpus object implemented by gensim
         n: n of n-gram
-        out: corpus output file path
+        corpus_fname: corpus file path
         min_count: least appearance count in corpus. if the n-gram appear k times which is below min_count, the model does not remember the n-gram
         """
 
         self.n = n
         self.size = size
-        self.corpus_fname = corpus_fname
+        self.fasta_fname = fasta_fname
 
-        if corpus is None and corpus_fname is None:
-            raise Exception("Either corpus_fname or corpus is needed!")
+        if corpus is None and fasta_fname is None:
+            raise Exception("Either fasta_fname or corpus is needed!")
 
-        if corpus_fname is not None:
+        if fasta_fname is not None:
             print('Generate Corpus file from fasta file...')
-            generate_corpusfile(corpus_fname, n, out)
-            corpus = word2vec.Text8Corpus(out)
+            generate_corpusfile(fasta_fname, n, corpus_fname)
+            corpus = word2vec.Text8Corpus(corpus_fname)
 
         word2vec.Word2Vec.__init__(self, corpus, size=size, sg=sg, window=window, min_count=min_count, workers=workers)
 
