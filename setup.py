@@ -11,7 +11,7 @@ REQUIRED_PACKAGES = [
 ]
 
 setup(name='biovec',
-      version='0.2.1',
+      version='0.2.3',
       license='MIT',
       description=description,
       long_description=description,
