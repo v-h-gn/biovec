@@ -15,7 +15,7 @@ pip install biovec
 ```
 import biovec
 
-pv = biovec.ProtVec("some_fasta_file.fasta", out="output_corpusfile_path.txt")
+pv = biovec.ProtVec("some_fasta_file.fasta", corpus_fname="output_corpusfile_path.txt")
 pv["QAT"]
 pv.to_vecs("ATATQSQSMTEEL")
 pv.save('model_file_path')
