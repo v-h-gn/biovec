@@ -46,7 +46,7 @@ def load_protvec(model_fname):
 
 class ProtVec(word2vec.Word2Vec):
 
-    def __init__(self, corpus_fname=None, corpus=None, n=3, size=100, out="corpus.txt",  sg=1, window=25, min_count=2, workers=3):
+    def __init__(self, corpus_fname=None, corpus=None, n=3, size=100, out="corpus.txt",  sg=1, window=25, min_count=1, workers=3):
         """
         Either fname or corpus is required.
 
