@@ -25,8 +25,8 @@ pv2 = biovec.models.load_protvec('model_file_path')
 
 ### Trained Model
 
-This package includes already trained model in '/trained_models'.
-swissprot_reviewed_protvec is a protvec model fed all Swiss-Prot reviewed proteins(551,754 proteins as of 2018/09/13) as the training data.
+This package includes already trained model in '/trained_models/swissprot-reviewed.model'.
+It is a protvec model fed all Swiss-Prot reviewed proteins(551,754 proteins as of 2018/09/13) as the training data.
 
 ### Source
 Paper: [ProtVec: A Continuous Distributed Representation of
