@@ -61,8 +61,7 @@ Biological Sequences](http://arxiv.org/pdf/1503.05140v1.pdf)
 5. protein-protein interaction prediction.
 
 など。
-classificationやpredictionはわかりやすい使い方だが、個人的にはprotein visualizationが最も効用が大きいのではないかと感じた。短い配列や、構造が既知の配列でない限り、現状簡単にタンパク質の全容を掴む方法が一般的に普及していないように感じるので、このような表現方法は一定の有用性があると考える。
-この考えは一見奇妙に映るが自然言語ではある程度認知されており、word2vecなどは記憶に新しい。
+classificationやpredictionはわかりやすい使い方だが、個人的にはprotein visualizationもまた面白いアプリケーションであると感じた。短い配列や、構造が既知の配列でない限り、現状簡単にタンパク質の全容を掴む方法は確立していないので、このような表現方法は一定の有用性があると考える。
 
 ### ProtVec実装
 
