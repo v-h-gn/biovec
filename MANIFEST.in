@@ -1,1 +1,1 @@
-include trained_model/swissprot-reviewed.model
+include trained_model/*
