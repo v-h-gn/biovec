@@ -4,7 +4,6 @@ ProtVec
 The algorithm comes from this paper: "[ProtVec: A Continuous Distributed Representation of
 Biological Sequences](http://arxiv.org/pdf/1503.05140v1.pdf)"
 
-
 ### Installation
 ```
 pip install biovec
