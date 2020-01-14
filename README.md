@@ -15,7 +15,7 @@ pip install biovec
 ```
 import biovec
 
-pv = biovec.models.ProtVec("some_fasta_file.fasta", corpus_fname="output_corpusfile_path.txt")
+pv = biovec.models.ProtVec("some_fasta_file.fasta", corpus_fname="output_corpusfile_path.txt", n=3)
 
 # The n-gram "QAT" should be trained in advance
 pv["QAT"]
