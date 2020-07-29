@@ -66,32 +66,38 @@ class ProtVec(word2vec.Word2Vec):
             line = line.strip()
             if len(line) > 0 : 
                 if line[0] == '>':
-                    accession = line[1:]
-                    seqDict[str(accession)] = ''
+                    accession = str(line[1:]).replace(" ","_")
+                    if accession not in seqDict:
+                        seqDict[accession] = ''
+                    else:
+                        raise KeyError('Duplicate record present for ',accession)
                 else:
                     line = line.replace(" ","")
+                    if line[-1] == '*':
+                        line = line[:-1]
+
                     if seqtype == 'amino acid':
                         if not re.search('[^ARNDCQEGHILKMFPSTWYVBZJUOX]',line.upper()):
-                            seqDict[str(accession)] += line
+                            seqDict[accession] += line
                         else:
-                            seqDict[str(accession)] += line
-                            print('Caution: Illegal character in the sequence',str(accession) )
+                            seqDict[accession] += line
+                            print('Caution: Illegal character in the sequence',accession )
                     elif seqtype == 'nucleotide':
                         if not re.search('[^AGCTURYNWSMKBHDV]',line.upper()):
-                            seqDict[str(accession)] += line
+                            seqDict[accession] += line
                         else:
-                            seqDict[str(accession)] += line
-                            print('Caution: Illegal character in the sequence',str(accession) )
+                            seqDict[accession] += line
+                            print('Caution: Illegal character in the sequence',accession )
 
         multiseq_protvec = np.empty([len(seqDict), 3,self.size])
         accessionlist = list(seqDict.keys())
         accessionlist.sort()
         print('Number of sequences in the input file : ', len(accessionlist))
         indextrack = 0
-        outputindexfile = open(outputfilename + '_index.tsv', 'a')
-        outputindexfile.write('index' + '\t' + 'accession' + '\n')
+        outputindexfile = open(outputfilename + '_index.tsv', 'w')
+        outputindexfile.write('index' + '\t' + 'accession' + '\t' + 'sequence' + '\n')
 
-        outputlogfile = open(outputfilename + '_log.txt', 'a')
+        outputlogfile = open(outputfilename + '_log.txt', 'w')
         outputlogfile.write('failed accessions' + '\n')
 
         for number in range(len(accessionlist)):
@@ -101,7 +107,7 @@ class ProtVec(word2vec.Word2Vec):
                 print('cannot output protvec representation for ',str(accessionlist[number]))
                 outputlogfile.write(str(accessionlist[number]) + '\n')
                 continue
-            outputindexfile.write(str(indextrack) + '\t' + str(accessionlist[number]) + '\n')
+            outputindexfile.write(str(indextrack) + '\t' + str(accessionlist[number]) + '\t' + str(seqDict[accessionlist[number]]) + '\n')
             multiseq_protvec[indextrack,] = accessionarray
             indextrack += 1
         

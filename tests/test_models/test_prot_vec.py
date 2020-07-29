@@ -39,8 +39,18 @@ class TestProtVec():
                 self.pv.to_vecs(input_seq_2)[-(5-len(input_seq_2)):],
                 numpy.zeros([5-len(input_seq_2), 100])
             )
+    
+    def test_multiseq_to_vec(self):
+        # read a multi-sequence FASTA file and output a numpy array with biovec representation for each sequence
+        self.FASTA_PATH_2 = 'testing_multi_fasta_file.fasta'
+        with open(self.FASTA_PATH_2, 'w') as f2:
+            f2.write('>sample_record1\nGSRATATQSQATGVLSMTIMEELP\n>sample_record2\nMAPPYILSAIAKAILINFIEGGVIGFSPR*\n>sample_record3\nMPGTVPTHEDHVDVLIVGAGPAGLMLSTWLSRCGIKTRI\n>sample_record4\nMLTSWGKTGFVLALALGGRAAENVITSDTFFYGESPPVYPSPEGTGAGDWASAYTKARAF\nVAQLSDDEKIQLTAGVSSNTACSGFIQPIDRLGFPGICMSDAGNGLRGTDYVNGWSSGIS')
+        multiseq_output = self.pv.multiseq_to_vecs(self.FASTA_PATH_2, 'test_multiseq')
 
-
+        eq_(
+            multiseq_output.shape,
+            (4,3,100)
+            )
 
     def test_save_and_load(self):
         f = tempfile.NamedTemporaryFile()
