@@ -62,6 +62,17 @@ class TestProtVec():
             multiseq_output[0],
             self.pv.to_vecs('GSRATATQSQATGVLSMTIMEELP')
         )
+        # sequence with * at stop
+        numpy.testing.assert_almost_equal(
+            multiseq_output[0],
+            multiseq_output[1]
+        )
+
+        # sequence spanning multiple lines
+        numpy.testing.assert_almost_equal(
+            multiseq_output[0],
+            multiseq_output[2]
+        )
 
         
         output_seq_count = len(open('test_multiseq_index.tsv').readlines())
