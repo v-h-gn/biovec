@@ -73,20 +73,18 @@ class ProtVec(word2vec.Word2Vec):
                         raise KeyError('Duplicate record present for ',accession)
                 else:
                     line = line.replace(" ","")
-                    if line[-1] == '*':
-                        line = line[:-1]
 
                     if seqtype == 'amino acid':
                         if not re.search('[^ARNDCQEGHILKMFPSTWYVBZJUOX]',line.upper()):
-                            seqDict[accession] += line
+                            seqDict[accession] += line.upper()
                         else:
-                            seqDict[accession] += line
+                            seqDict[accession] += line.upper()
                             print('Caution: Illegal character in the sequence',accession )
                     elif seqtype == 'nucleotide':
                         if not re.search('[^AGCTURYNWSMKBHDV]',line.upper()):
-                            seqDict[accession] += line
+                            seqDict[accession] += line.upper()
                         else:
-                            seqDict[accession] += line
+                            seqDict[accession] += line.upper()
                             print('Caution: Illegal character in the sequence',accession )
 
         multiseq_protvec = np.empty([len(seqDict), 3,self.size])
@@ -97,15 +95,17 @@ class ProtVec(word2vec.Word2Vec):
         outputindexfile = open(outputfilename + '_index.tsv', 'w')
         outputindexfile.write('index' + '\t' + 'accession' + '\t' + 'sequence' + '\n')
 
-        outputlogfile = open(outputfilename + '_log.txt', 'w')
-        outputlogfile.write('failed accessions' + '\n')
+        outputlogfile = open(outputfilename + '_failed.tsv', 'w')
+        outputlogfile.write('failed accession' + '\t' + 'sequence' + '\n')
 
         for number in range(len(accessionlist)):
             try:
+                if seqDict[accessionlist[number]][-1] == '*':
+                    seqDict[accessionlist[number]] = seqDict[accessionlist[number]][:-1]
                 accessionarray = self.to_vecs(seqDict[accessionlist[number]])
             except:
                 print('cannot output protvec representation for ',str(accessionlist[number]))
-                outputlogfile.write(str(accessionlist[number]) + '\n')
+                outputlogfile.write(str(accessionlist[number]) + '\t' + str(seqDict[accessionlist[number]]) + '\n')
                 continue
             outputindexfile.write(str(indextrack) + '\t' + str(accessionlist[number]) + '\t' + str(seqDict[accessionlist[number]]) + '\n')
             multiseq_protvec[indextrack,] = accessionarray
