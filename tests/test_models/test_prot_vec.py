@@ -4,6 +4,7 @@ from nose.tools import eq_, ok_
 import biovec
 import tempfile
 import os
+import numpy
 
 
 class TestProtVec():
@@ -27,9 +28,19 @@ class TestProtVec():
         # convert whole amino acid sequence into vector
         input_seq = 'QSQATGVLS'
         eq_(
-            [vec.shape for vec in self.pv.to_vecs(input_seq)],
-            [(100,) for i in range(0, len(input_seq)/3)]
+            self.pv.to_vecs(input_seq).shape,
+            (3,100)
         )
+
+        input_seq_2 = 'TGV'
+
+        if len(input_seq_2) >=3 and len(input_seq_2) < 5:
+            numpy.testing.assert_almost_equal(
+                self.pv.to_vecs(input_seq_2)[-(5-len(input_seq_2)):],
+                numpy.zeros([5-len(input_seq_2), 100])
+            )
+
+
 
     def test_save_and_load(self):
         f = tempfile.NamedTemporaryFile()
