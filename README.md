@@ -6,9 +6,7 @@ The algorithm comes from this paper: "[ProtVec: A Continuous Distributed Represe
 Biological Sequences](http://arxiv.org/pdf/1503.05140v1.pdf)"
 
 ### Installation
-```
-pip install biovec
-```
+Install locally after cloning.
 
 ### Quick Start
 
@@ -23,11 +21,16 @@ pv["QAT"]
 # convert whole amino acid sequence into vector
 pv.to_vecs("ATATQSQSMTEEL")
 
+# convert multi-sequence FASTA file to a numpy array of protvec vectors (axis 0 = sample axis)
+# seqtype - 'amino acid' [default] or 'nucleotide'
+pv.multiseq_to_vecs('sample_aa_file.fasta','output_filename', seqtype = 'amino acid')
+
 # save trained model into file
 pv.save('model_file_path')
 
 # load trained model from file
 pv2 = biovec.models.load_protvec('model_file_path')
+
 ```
 
 ### Trained Model

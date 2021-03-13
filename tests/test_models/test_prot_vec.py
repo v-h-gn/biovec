@@ -4,6 +4,7 @@ from nose.tools import eq_, ok_
 import biovec
 import tempfile
 import os
+import numpy
 
 
 class TestProtVec():
@@ -27,9 +28,67 @@ class TestProtVec():
         # convert whole amino acid sequence into vector
         input_seq = 'QSQATGVLS'
         eq_(
-            [vec.shape for vec in self.pv.to_vecs(input_seq)],
-            [(100,) for i in range(0, len(input_seq)/3)]
+            self.pv.to_vecs(input_seq).shape,
+            (3,100)
         )
+
+        input_seq_2 = 'TGV'
+
+        if len(input_seq_2) >=3 and len(input_seq_2) < 5:
+            numpy.testing.assert_almost_equal(
+                self.pv.to_vecs(input_seq_2)[-(5-len(input_seq_2)):],
+                numpy.zeros([5-len(input_seq_2), 100])
+            )
+    
+    def test_multiseq_to_vecs(self):
+        # read a multi-sequence FASTA file and output a numpy array with biovec representation for each sequence
+        self.FASTA_PATH_2 = 'testing_multi_fasta_file.fasta'
+
+        LIST_OF_ACCESSION = ['sample_record1','sample_record2','sample_record3','sample_record4','sample_record5','sample_record6']
+        LIST_OF_SEQUENCES = ['GSRATATQSQATGVLSMTIMEELP','GSRATATQSQATGVLSMTIMEELP*','GSRATATQSQATGVLSMTIMEELPX','GSRATATQSQ\nATGVLSMTIMEELP','GSRATATQSQATGVLSMTIMEELPATATQS','GSRATATQSQATGVLSMTIMEELPU-X']
+
+        with open(self.FASTA_PATH_2, 'w') as f2:
+            for n in range(len(LIST_OF_ACCESSION)):
+                f2.write('>' + LIST_OF_ACCESSION[n] + '\n' + LIST_OF_SEQUENCES[n] + '\n')
+        
+        multiseq_output = self.pv.multiseq_to_vecs(self.FASTA_PATH_2, 'test_multiseq')
+
+        eq_(
+            multiseq_output.shape,
+            (3,3,100)
+            )
+
+        numpy.testing.assert_almost_equal(
+            multiseq_output[0],
+            self.pv.to_vecs('GSRATATQSQATGVLSMTIMEELP')
+        )
+        # sequence with * at stop
+        numpy.testing.assert_almost_equal(
+            multiseq_output[0],
+            multiseq_output[1]
+        )
+
+        # sequence spanning multiple lines
+        numpy.testing.assert_almost_equal(
+            multiseq_output[0],
+            multiseq_output[2]
+        )
+
+        
+        output_seq_count = len(open('test_multiseq_index.tsv').readlines())
+
+        eq_(
+            output_seq_count,
+            3 + 1  
+        ) # header line --> +1
+
+        failed_seq_count = len(open('test_multiseq_failed.tsv').readlines())
+
+        eq_(
+            failed_seq_count,
+            3 + 1
+        ) # header line --> +1
+
 
     def test_save_and_load(self):
         f = tempfile.NamedTemporaryFile()
