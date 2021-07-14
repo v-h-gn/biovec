@@ -6,7 +6,9 @@ The algorithm comes from this paper: "[ProtVec: A Continuous Distributed Represe
 Biological Sequences](http://arxiv.org/pdf/1503.05140v1.pdf)"
 
 ### Installation
-Install locally after cloning.
+```
+pip install biovec
+```
 
 ### Quick Start
 
