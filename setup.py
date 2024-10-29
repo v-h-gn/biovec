@@ -5,9 +5,9 @@ from setuptools import find_packages, setup
 
 description = 'A new approach for representing biological sequences'
 REQUIRED_PACKAGES = [
-    'gensim==3.4.0',
+    'gensim>=3.4.0',
     'tqdm>=2.0.0',
-    'pyfaidx==0.7.1',
+    'pyfaidx>=0.7.1',
     'numpy>=1.18.1'
 ]
 
